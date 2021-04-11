@@ -1,7 +1,6 @@
 library flutter_social_textfield;
 
-/// A Calculator.
-class Calculator {
-  /// Returns [value] plus 1.
-  int addOne(int value) => value + 1;
-}
+export 'util/regular_expressions.dart';
+export 'controller/social_text_editing_controller.dart';
+export 'widget/social_text_field.dart';
+export 'widget/social_text_field_controller.dart';
