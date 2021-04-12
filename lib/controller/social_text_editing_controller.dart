@@ -50,13 +50,13 @@ class SocialTextEditingController extends TextEditingController{
     _regularExpressions[type] = regExp;
   }
 
-  void updateContent(String newValue, TextRange range){
+  void replaceRange(String newValue, TextRange range){
     var willAddSpaceAtEnd = text.length <= range.end;
     var replacingText = "@$newValue${willAddSpaceAtEnd ? " " : ""}";
     var replacedText = text.replaceRange(range.start, range.end, replacingText);
-
     var newCursorPosition = range.start+replacingText.length + (willAddSpaceAtEnd ? 0 : 1);
-    value = TextEditingValue(text: replacedText,selection: selection.copyWith(baseOffset: newCursorPosition, extentOffset:  newCursorPosition));
+    print("new Position: $newCursorPosition");
+    value = value.copyWith(text: replacedText,selection: value.selection.copyWith(baseOffset: newCursorPosition, extentOffset: newCursorPosition),composing: value.composing);
   }
 
   void _processNewValue(TextEditingValue newValue){
@@ -78,12 +78,6 @@ class SocialTextEditingController extends TextEditingController{
 
   @override
   set value(TextEditingValue newValue) {
-    assert(
-    !newValue.composing.isValid || newValue.isComposingRangeValid,
-    'New TextEditingValue $newValue has an invalid non-empty composing range '
-        '${newValue.composing}. It is recommended to use a valid composing range, '
-        'even for readonly text fields',
-    );
     _processNewValue(newValue);
     super.value = newValue;
   }

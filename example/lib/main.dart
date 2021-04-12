@@ -106,7 +106,7 @@ class _ContentScreenState extends State<ContentScreen> {
 
   void onDetectContent(SocialContentDetection detection){
     lastDetection = detection;
-    print("$detection");
+
   }
 
   @override
@@ -147,7 +147,15 @@ class _ContentScreenState extends State<ContentScreen> {
         ),
         detectionBuilders: {
           DetectedType.mention:(context)=>PreferredSize(
-            child: ListView.builder(itemBuilder: (context,index)=>ListTile(title: Text("Item: $index"))),
+            child: ListView.builder(itemBuilder: (context,index)=>
+                  ListTile(
+                    title: Text("Item: $index"),
+                    onTap: (){
+                      if(lastDetection != null){
+                        _textEditingController.replaceRange("replaced", lastDetection.range);
+                      }
+                    },
+                )),
             preferredSize: Size.fromHeight(height),)
         },
       ),
