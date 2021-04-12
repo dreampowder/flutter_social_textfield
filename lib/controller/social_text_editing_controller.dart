@@ -13,6 +13,11 @@ class SocialContentDetection{
   final TextRange range;
   final String text;
   SocialContentDetection(this.type, this.range, this.text);
+
+  @override
+  String toString() {
+    return 'SocialContentDetection{type: $type, range: $range, text: $text}';
+  }
 }
 
 class SocialTextEditingController extends TextEditingController{
@@ -61,7 +66,8 @@ class SocialTextEditingController extends TextEditingController{
     var lastPart = subString.split(" ").last;
     var startIndex = currentPosition - lastPart.length;
     var detectionContent = newValue.text.substring(startIndex).split(" ").first;
-    _detectionStream.add(SocialContentDetection(getType(detectionContent), TextRange(start: startIndex, end: startIndex + detectionContent.length-1), detectionContent));
+    print("detection content: $detectionContent");
+    _detectionStream.add(SocialContentDetection(getType(detectionContent), TextRange(start: startIndex, end: startIndex + detectionContent.length), detectionContent));
   }
   
   DetectedType getType(String word){

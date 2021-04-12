@@ -51,13 +51,10 @@ class _DefaultSocialTextFieldControllerState extends State<DefaultSocialTextFiel
   }
 
   void onDetectContent(SocialContentDetection detection){
-    print("detection");
     if(detection.type != _detectedType){
-      print("new detection");
       setState(() {
         _detectedType = detection.type;
       });
-      print(" does have ${doesHaveBuilderForCurrentType()}");
       if(doesHaveBuilderForCurrentType() && widget.scrollController != null){
 
         var baseText = widget.textEditingController.text.substring(0,widget.textEditingController.selection.baseOffset);
@@ -66,8 +63,7 @@ class _DefaultSocialTextFieldControllerState extends State<DefaultSocialTextFiel
           defaultTextStyle = widget.textEditingController.detectionTextStyles[DetectedType.plain_text]!;
         }
         var estimatedSize = getTextRectSize(width: widget.focusNode.size.width, text: baseText, style: defaultTextStyle);
-        print("will scroll: $estimatedSize");
-        Future.delayed(animationDuration,()=>widget.scrollController?.animateTo(estimatedSize.height, duration: Duration(milliseconds: 200), curve: Curves.easeInOut));
+        Future.delayed(animationDuration,()=>widget.scrollController?.animateTo(estimatedSize.height, duration: animationDuration, curve: Curves.easeInOut));
       }
     }
   }
