@@ -60,13 +60,15 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
         actions: [
           IconButton(icon: Icon(Icons.sync), onPressed: (){
-            print("FocusNode: ${_focusNode.size}");
+            print("FocusNode: ${_textEditingController.selection.base}");
 
-            _scrollController.animateTo(_focusNode.offset.dy + height, duration: Duration(milliseconds: 200), curve: Curves.easeInOut);
+            _scrollController.animateTo(238, duration: Duration(milliseconds: 200), curve: Curves.easeInOut);
           })
         ],
       ),
       body: DefaultSocialTextFieldController(
+        focusNode: _focusNode,
+        scrollController: _scrollController,
         textEditingController: _textEditingController,
         child: Container(
         padding: EdgeInsets.all(8),

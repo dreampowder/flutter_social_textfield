@@ -7,11 +7,13 @@ import 'package:flutter_social_textfield/controller/social_text_editing_controll
 
 class DefaultSocialTextFieldController extends StatefulWidget {
 
+  final FocusNode focusNode;
+  final ScrollController? scrollController;
   final SocialTextEditingController textEditingController;
   final Widget child;
   final Map<DetectedType, PreferredSize Function(BuildContext context)>? detectionBuilders;
 
-  DefaultSocialTextFieldController({required this.child,required this.textEditingController, this.detectionBuilders});
+  DefaultSocialTextFieldController({required this.child,required this.textEditingController,required this.focusNode, this.detectionBuilders,this.scrollController});
 
   @override
   _DefaultSocialTextFieldControllerState createState() => _DefaultSocialTextFieldControllerState();
@@ -25,6 +27,8 @@ class _DefaultSocialTextFieldControllerState extends State<DefaultSocialTextFiel
   StreamSubscription<SocialContentDetection>? _streamSubscription;
 
   Map<DetectedType, double> heightMap = Map();
+
+  var animationDuration = const Duration(milliseconds: 200);
 
   @override
   void dispose() {
@@ -53,7 +57,26 @@ class _DefaultSocialTextFieldControllerState extends State<DefaultSocialTextFiel
       setState(() {
         _detectedType = detection.type;
       });
+      print(" does have ${doesHaveBuilderForCurrentType()}");
+      if(doesHaveBuilderForCurrentType() && widget.scrollController != null){
+
+        var baseText = widget.textEditingController.text.substring(0,widget.textEditingController.selection.baseOffset);
+        var defaultTextStyle = TextStyle();
+        if(widget.textEditingController.detectionTextStyles.containsKey(DetectedType.plain_text)){
+          defaultTextStyle = widget.textEditingController.detectionTextStyles[DetectedType.plain_text]!;
+        }
+        var estimatedSize = getTextRectSize(width: widget.focusNode.size.width, text: baseText, style: defaultTextStyle);
+        print("will scroll: $estimatedSize");
+        Future.delayed(animationDuration,()=>widget.scrollController?.animateTo(estimatedSize.height, duration: Duration(milliseconds: 200), curve: Curves.easeInOut));
+      }
     }
+  }
+
+  Size getTextRectSize({required width,required String text,required TextStyle style}) {
+    final TextPainter textPainter = TextPainter(
+        text: TextSpan(text: text, style: style), textDirection: TextDirection.ltr)
+      ..layout(minWidth: 0, maxWidth: width);
+    return textPainter.size;
   }
 
   bool doesHaveBuilderForCurrentType(){
@@ -80,14 +103,14 @@ class _DefaultSocialTextFieldControllerState extends State<DefaultSocialTextFiel
     return Stack(
       children: [
         AnimatedPositioned(
-          duration: Duration(milliseconds: 200),
+          duration: animationDuration,
           top: 0,
           left: 0,
           right: 0,
           bottom: getChildBottomHeight(),
           child: widget.child),
         AnimatedPositioned(
-          duration: Duration(milliseconds: 200),
+          duration: animationDuration,
           bottom: 0,
           left: 0,
           right: 0,
