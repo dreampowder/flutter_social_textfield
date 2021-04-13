@@ -12,8 +12,8 @@ class DefaultSocialTextFieldController extends StatefulWidget {
   final SocialTextEditingController textEditingController;
   final Widget child;
   final Map<DetectedType, PreferredSize Function(BuildContext context)>? detectionBuilders;
-
-  DefaultSocialTextFieldController({required this.child,required this.textEditingController,required this.focusNode, this.detectionBuilders,this.scrollController});
+  final bool willResizeChild;
+  DefaultSocialTextFieldController({required this.child,required this.textEditingController,required this.focusNode, this.detectionBuilders,this.scrollController,this.willResizeChild = true});
 
   @override
   _DefaultSocialTextFieldControllerState createState() => _DefaultSocialTextFieldControllerState();
@@ -79,8 +79,8 @@ class _DefaultSocialTextFieldControllerState extends State<DefaultSocialTextFiel
     return (widget.detectionBuilders?.containsKey(_detectedType) ?? false);
   }
 
-  double getChildBottomHeight(){
-    if(!doesHaveBuilderForCurrentType()){
+  double getChildBottomHeight(bool isDetectionContent){
+    if(!doesHaveBuilderForCurrentType() || (!widget.willResizeChild && !isDetectionContent)){
       return 0;
     }
     print("${heightMap[_detectedType] ?? 0}");
@@ -99,19 +99,19 @@ class _DefaultSocialTextFieldControllerState extends State<DefaultSocialTextFiel
     return Stack(
       children: [
         AnimatedPositioned(
+            duration: animationDuration,
+            bottom: 0,
+            left: 0,
+            right: 0,
+            height: getChildBottomHeight(true),
+            child: getDetectionContent()),
+        AnimatedPositioned(
           duration: animationDuration,
           top: 0,
           left: 0,
           right: 0,
-          bottom: getChildBottomHeight(),
+          bottom: getChildBottomHeight(false),
           child: widget.child),
-        AnimatedPositioned(
-          duration: animationDuration,
-          bottom: 0,
-          left: 0,
-          right: 0,
-          height: getChildBottomHeight(),
-          child: getDetectionContent())
       ],
     );
   }
