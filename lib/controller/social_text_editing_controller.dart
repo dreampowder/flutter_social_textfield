@@ -65,11 +65,11 @@ class SocialTextEditingController extends TextEditingController{
       return;
     }
     var subString = newValue.text.substring(0,currentPosition);
-    var lastPart = subString.split(" ").last;
+    var lastPart = subString.split(" ").last.split("\n").last;
     var startIndex = currentPosition - lastPart.length;
-    var detectionContent = newValue.text.substring(startIndex).split(" ").first;
-    print("detection content: $detectionContent");
-    _detectionStream.add(SocialContentDetection(getType(detectionContent), TextRange(start: startIndex, end: startIndex + detectionContent.length), detectionContent));
+    var detectionContent = newValue.text.substring(startIndex).split(" ").first.split("\n").first;
+    print("[$startIndex, ${startIndex + detectionContent.length-1}] lastPath: [$detectionContent]");
+    _detectionStream.add(SocialContentDetection(getType(detectionContent), TextRange(start: startIndex, end: startIndex + detectionContent.length-1), detectionContent));
   }
   
   DetectedType getType(String word){
@@ -84,7 +84,7 @@ class SocialTextEditingController extends TextEditingController{
 
   @override
   TextSpan buildTextSpan({TextStyle? style, required bool withComposing}) {
-    return SocialTextSpanBuilder(detectionTextStyles, _regularExpressions,style).build(text);
+    return SocialTextSpanBuilder(_regularExpressions,style,detectionTextStyles: detectionTextStyles).build(text);
   }
 
 
@@ -93,20 +93,20 @@ class SocialTextEditingController extends TextEditingController{
 class SocialTextSpanBuilder{
 
   final TextStyle? defaultTextStyle;
-  final Map<DetectedType, TextStyle>? detectionTextStyles;
+  final Map<DetectedType, TextStyle> detectionTextStyles;
 
   final Map<DetectedType, RegExp> regularExpressions;
 
   Map<DetectedType, List<RegExpMatch>?> allMatches = Map();
 
-  SocialTextSpanBuilder(this.detectionTextStyles,this.regularExpressions,this.defaultTextStyle);
+  SocialTextSpanBuilder(this.regularExpressions,this.defaultTextStyle,{this.detectionTextStyles = const {}});
 
   TextStyle getTextStyleForRange(int start, int end){
     TextStyle? textStyle;
     allMatches.keys.forEach((type) {
       var index = allMatches[type]!.indexWhere((match) => match.start == start && match.end == end);
       if(index != -1){
-        textStyle = detectionTextStyles?[type];
+        textStyle = detectionTextStyles[type];
         return;
       }
     });
