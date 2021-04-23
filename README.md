@@ -38,7 +38,7 @@ SocialTextField is basically an improved Text Editing Controller, so you can jus
         ),
     )
 
-###Configuring the Text Editing Controller
+### Configuring the Text Editing Controller
 
 SocialTextEditingController can be configured by calling configuration methods.
 
@@ -58,7 +58,7 @@ It is recommended to set these values on initialization;
         ..setTextStyle(DetectedType.mention, TextStyle(color: Colors.purple,backgroundColor: Colors.purple.withAlpha(50)))
         ..setRegexp(DetectedType.url, RegExp("your_own_regex_fr_this_type"));
 
-###Listening Content Detection Events
+### Listening Content Detection Events
 
 One of the main reasons that i want to create this plugin was that i needed to listen detection events from different widgets.
 So flutter_social_textfield provides a stream for detections so you can subscribe and listen events when needed.
@@ -69,10 +69,12 @@ So flutter_social_textfield provides a stream for detections so you can subscrib
     void initState() {
     super.initState();
     _textEditingController = SocialTextEditingController()
-    ..text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut tellus elementum sagittis vitae et. Id velit ut tortor pretium viverra suspendisse. Massa placerat duis ultricies lacus sed. Placerat in egestas erat imperdiet sed euismod nisi. Velit scelerisque in dictum non consectetur. Massa id neque aliquam vestibulum morbi blandit. Purus sit amet volutpat consequat mauris nunc congue nisi. Ut diam quam nulla porttitor massa id. Sed faucibus turpis in eu mi. Rhoncus mattis rhoncus urna neque. Vel eros donec ac odio. Elit scelerisque mauris pellentesque pulvinar pellentesque habitant morbi tristique senectus. Lobortis elementum nibh tellus molestie nunc non blandit massa enim. Amet consectetur adipiscing elit duis tristique sollicitudin nibh sit amet."
+    ..text = "Lorem ipsum amet."
     ..setTextStyle(DetectedType.mention, TextStyle(color: Colors.purple,backgroundColor: Colors.purple.withAlpha(50)))
     ..setTextStyle(DetectedType.url, TextStyle(color: Colors.blue, decoration: TextDecoration.underline))
     ..setTextStyle(DetectedType.hashtag, TextStyle(color: Colors.blue, fontWeight: FontWeight.w600));
+    
+    //Subscribe to events
      _streamSubscription = _textEditingController.subscribeToDetection(onDetectContent);
     }
     
@@ -102,7 +104,7 @@ The Stream Subscriptoin returns SocialContentDetection class:
         }
     }
 
-###DefaultSocialTextFieldController
+### DefaultSocialTextFieldController
 
 I've implemented an experimental widget for ease of use. DefaultSocialTextFieldController puts the main content inside a Stack and allows users to show relevant content when curser comes over a detected content
 ![DefaultSocialTextFieldController in action](https://github.com/dreampowder/flutter_social_textfield/blob/main/readme_contents/default_text_controller.gif)
@@ -148,8 +150,9 @@ So if you just want to show formatted text content instead of using inside an ed
     }   
 
 
-##Acknowledgements
+## Acknowledgements
 
 This widget's default regular expressions taken from this wonderful widget:
 
 [detectable_text_field](https://pub.dev/packages/detectable_text_field)
+
