@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: MyHomePage(title: 'Flutter Social Text Field'),
     );
   }
 }
@@ -42,26 +42,9 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
         actions: [
-
         ],
       ),
-      body: Container(
-        alignment: Alignment.center,
-        child: ElevatedButton(
-          child: Text("Show Modal Sheet"),
-          onPressed: (){
-            showModalBottomSheet(
-                enableDrag: true,
-                isScrollControlled: true,
-              context: context,
-              builder: (context){
-                return FractionallySizedBox(
-                  heightFactor: 0.9,
-                    child: ContentScreen());
-            });
-          },
-        ),
-      ) // This trailing comma makes auto-formatting nicer for build methods.
+      body: ContentScreen()// This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
@@ -112,53 +95,73 @@ class _ContentScreenState extends State<ContentScreen> {
   @override
   Widget build(BuildContext context) {
     var height = MediaQuery.of(context).size.height * 0.4;
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Create Post"),
-      ),
-      extendBodyBehindAppBar: true,
-      extendBody: true,
-      resizeToAvoidBottomInset: false,
-      body: DefaultSocialTextFieldController(
-        focusNode: _focusNode,
-        scrollController: _scrollController,
-        textEditingController: _textEditingController,
-        child: Container(
-          color: Colors.red,
-          padding: EdgeInsets.all(8),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              Expanded(
-                child: TextField(
-                  scrollController: _scrollController,
-                  focusNode: _focusNode,
-                  controller: _textEditingController,
-                  expands: true,
-                  maxLines: null,
-                  minLines: null,
-                  decoration: InputDecoration(
-                      hintText: "Please Enter a Text"
-                  ),
+    return DefaultSocialTextFieldController(
+      focusNode: _focusNode,
+      scrollController: _scrollController,
+      textEditingController: _textEditingController,
+      child: Container(
+        padding: EdgeInsets.all(8),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            Expanded(
+              child: TextField(
+                scrollController: _scrollController,
+                focusNode: _focusNode,
+                controller: _textEditingController,
+                expands: true,
+                maxLines: null,
+                minLines: null,
+                decoration: InputDecoration(
+                    hintText: "Please Enter a Text"
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
-        detectionBuilders: {
-          DetectedType.mention:(context)=>PreferredSize(
-            child: ListView.builder(itemBuilder: (context,index)=>
-                  ListTile(
-                    title: Text("Item: $index"),
-                    onTap: (){
-                      if(lastDetection != null){
-                        _textEditingController.replaceRange("replaced", lastDetection.range);
-                      }
-                    },
-                )),
-            preferredSize: Size.fromHeight(height),)
-        },
       ),
+      detectionBuilders: {
+        DetectedType.mention:(context)=>mentionContent(height),
+        DetectedType.hashtag:(context)=>hashtagContent(height),
+        DetectedType.url:(context)=>urlContent(height)
+      },
     );
+  }
+
+  PreferredSize mentionContent(double height){
+    return PreferredSize(
+      child: ListView.builder(itemBuilder: (context,index)=>
+          ListTile(
+            title: Text("@user_$index"),
+            onTap: (){
+              if(lastDetection != null){
+                _textEditingController.replaceRange("@user_$index", lastDetection.range);
+              }
+            },
+          )),
+      preferredSize: Size.fromHeight(height),);
+  }
+
+  PreferredSize hashtagContent(double height){
+    return PreferredSize(
+      child: ListView.builder(itemBuilder: (context,index)=>
+          ListTile(
+            title: Text("#hashtag_$index"),
+            onTap: (){
+              if(lastDetection != null){
+                _textEditingController.replaceRange("#hashtag_$index", lastDetection.range);
+              }
+            },
+          )),
+      preferredSize: Size.fromHeight(height),);
+  }
+
+  PreferredSize urlContent(double height){
+    return PreferredSize(
+      child: Container(
+        alignment: Alignment.center,
+        child: Text("A Website for url content")
+      ),
+      preferredSize: Size.fromHeight(height),);
   }
 }

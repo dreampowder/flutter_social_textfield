@@ -5,6 +5,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_social_textfield/controller/social_text_editing_controller.dart';
 
+/// DefaultSocialTextFieldController widget for wrapping the content inside a for automatically showing the relevant content for detected type. (i.e showing mention/user list when cursor is on the @mention/#hashtag text)
+/// [focusNode] required and also needs also to be attached to the TextField used by the SocialTextEditingController
+/// [textEditingController] required and needs also to be attached to the same TextField
+/// [scrollController] optional, used for determining the visiblility of main content when userlist / mentionlist / etc.. appeared
+/// [child] required, must contain a TextField with the same [textEditingController]
+/// [detectionBuilders] builders for relevant [DetectedType]. nothing is shown if a type does not have a builder
+/// [willResizeChild] the efault value is true. changes the main content size when detection content has been shown.
 class DefaultSocialTextFieldController extends StatefulWidget {
 
   final FocusNode focusNode;
