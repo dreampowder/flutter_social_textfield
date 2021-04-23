@@ -1,8 +1,8 @@
 name: flutter_social_textfield
 description: Yet another textfield with hashtag, url and @mention detection. also with additional actions.
 version: 0.0.1
-author:
-homepage:
+author: Serdar Coskun
+homepage: https://www.github.com/dreampowder
 
 environment:
   sdk: ">=2.12.0 <3.0.0"
