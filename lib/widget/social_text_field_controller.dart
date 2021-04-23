@@ -79,8 +79,16 @@ class _DefaultSocialTextFieldControllerState extends State<DefaultSocialTextFiel
     return (widget.detectionBuilders?.containsKey(_detectedType) ?? false);
   }
 
-  double getChildBottomHeight(bool isDetectionContent){
-    if(!doesHaveBuilderForCurrentType() || (!widget.willResizeChild && !isDetectionContent)){
+  double getChildBottomPosition(){
+    if(!doesHaveBuilderForCurrentType() || (!widget.willResizeChild)){
+      return 0;
+    }
+    print("${heightMap[_detectedType] ?? 0}");
+    return heightMap[_detectedType] ?? 0;
+  }
+
+  double getBuilderContentHeight(){
+    if(!doesHaveBuilderForCurrentType() || (!widget.willResizeChild)){
       return 0;
     }
     print("${heightMap[_detectedType] ?? 0}");
@@ -103,14 +111,14 @@ class _DefaultSocialTextFieldControllerState extends State<DefaultSocialTextFiel
             bottom: 0,
             left: 0,
             right: 0,
-            height: getChildBottomHeight(true),
+            height: getBuilderContentHeight(),
             child: getDetectionContent()),
         AnimatedPositioned(
           duration: animationDuration,
           top: 0,
           left: 0,
           right: 0,
-          bottom: getChildBottomHeight(false),
+          bottom: getChildBottomPosition(),
           child: widget.child),
       ],
     );
