@@ -51,11 +51,13 @@ class SocialTextEditingController extends TextEditingController{
   }
 
   void replaceRange(String newValue, TextRange range){
-    var willAddSpaceAtEnd = text.length <= range.end;
+    print("text.length = ${text.length}");
+    print("range.end: ${range.end}");
+    var willAddSpaceAtEnd = (text.length-1) <= range.end;
     var replacingText = "@$newValue${willAddSpaceAtEnd ? " " : ""}";
-    var replacedText = text.replaceRange(range.start, range.end, replacingText);
+    var replacedText = text.replaceRange(range.start, range.end+1, replacingText);
     var newCursorPosition = range.start+replacingText.length + (willAddSpaceAtEnd ? 0 : 1);
-    print("new Position: $newCursorPosition");
+    print("$willAddSpaceAtEnd new Position: $newCursorPosition");
     value = value.copyWith(text: replacedText,selection: value.selection.copyWith(baseOffset: newCursorPosition, extentOffset: newCursorPosition),composing: value.composing);
   }
 
@@ -129,8 +131,8 @@ class SocialTextSpanBuilder{
     int cursorPosition = 0;
     for(int i = 0;i<orderedMatches.length;i++){
       var match = orderedMatches[i];
-        root = getTextSpan(root, text.substring(cursorPosition,match.start), getTextStyleForRange(cursorPosition, match.start));
-        root = getTextSpan(root, text.substring(match.start, match.end), getTextStyleForRange(match.start, match.end));
+        root = getTextSpan(root, text.substring(cursorPosition,match.start+1), getTextStyleForRange(cursorPosition, match.start));
+        root = getTextSpan(root, text.substring(match.start+1, match.end), getTextStyleForRange(match.start, match.end));
         cursorPosition = match.end;
     }
     if(cursorPosition < text.length-1){
