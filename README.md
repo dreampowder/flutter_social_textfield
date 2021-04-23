@@ -38,7 +38,7 @@ SocialTextField is basically an improved Text Editing Controller, so you can jus
         ),
     )
 
-### Configuring the Text Editing Controller
+## Configuring the Text Editing Controller
 
 SocialTextEditingController can be configured by calling configuration methods.
 
@@ -58,7 +58,7 @@ It is recommended to set these values on initialization;
         ..setTextStyle(DetectedType.mention, TextStyle(color: Colors.purple,backgroundColor: Colors.purple.withAlpha(50)))
         ..setRegexp(DetectedType.url, RegExp("your_own_regex_fr_this_type"));
 
-### Listening Content Detection Events
+## Listening Content Detection Events
 
 One of the main reasons that i want to create this plugin was that i needed to listen detection events from different widgets.
 So flutter_social_textfield provides a stream for detections so you can subscribe and listen events when needed.
@@ -104,16 +104,16 @@ The Stream Subscriptoin returns SocialContentDetection class:
         }
     }
 
-### DefaultSocialTextFieldController
+## DefaultSocialTextFieldController
 
 I've implemented an experimental widget for ease of use. DefaultSocialTextFieldController puts the main content inside a Stack and allows users to show relevant content when curser comes over a detected content
 ![DefaultSocialTextFieldController in action](https://github.com/dreampowder/flutter_social_textfield/blob/main/readme_contents/default_text_controller.gif)
 
-####Using DefaultSocialTextFieldController
+### Using DefaultSocialTextFieldController
 An example usage of the DefaultSocialTextFieldController can be seen in the example project.
 The main goal is to provide an easy way to implement features that have been seen in most of the social media applications.
 
-###Other Useful Components
+## SocialTextSpanBuilder
 
 flutter_social_textfield uses SocialTextSpanBuilder for rendering the text inside the attached textfield.
 So if you just want to show formatted text content instead of using inside an editor you can use it like this:
@@ -150,7 +150,7 @@ So if you just want to show formatted text content instead of using inside an ed
     }   
 
 
-## Acknowledgements
+# Acknowledgements
 
 This widget's default regular expressions taken from this wonderful widget:
 
