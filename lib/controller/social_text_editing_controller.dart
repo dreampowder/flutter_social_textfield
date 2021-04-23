@@ -57,8 +57,11 @@ class SocialTextEditingController extends TextEditingController{
     var replacingText = "@$newValue${willAddSpaceAtEnd ? " " : ""}";
     var replacedText = text.replaceRange(range.start, range.end+1, replacingText);
     var newCursorPosition = range.start+replacingText.length + (willAddSpaceAtEnd ? 0 : 1);
-    print("$willAddSpaceAtEnd new Position: $newCursorPosition");
-    value = value.copyWith(text: replacedText,selection: value.selection.copyWith(baseOffset: newCursorPosition, extentOffset: newCursorPosition),composing: value.composing);
+    print("$willAddSpaceAtEnd new Position: $newCursorPosition, new Length: ${replacedText.length}");
+    // if(newCursorPosition == replacedText.length){
+    //   newCursorPosition -= 1;
+    // }
+    value = value.copyWith(text: replacedText,selection: value.selection.copyWith(baseOffset: newCursorPosition,extentOffset: newCursorPosition),composing: value.composing);
   }
 
   void _processNewValue(TextEditingValue newValue){

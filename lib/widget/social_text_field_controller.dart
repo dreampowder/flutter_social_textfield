@@ -41,8 +41,8 @@ class _DefaultSocialTextFieldControllerState extends State<DefaultSocialTextFiel
     super.initState();
     _streamSubscription = widget.textEditingController.subscribeToDetection(onDetectContent);
     DetectedType.values.forEach((type) {
-      if (widget.detectionBuilders?[type] != null) {
-        heightMap[type] = widget.detectionBuilders?[type]!(context).preferredSize.height ?? 0;
+      if (widget.detectionBuilders?.containsKey(type) ?? false) {
+        heightMap[type] = widget.detectionBuilders?[type]!(context).preferredSize.height ?? 0.0;
       } else {
         heightMap[type] = 0;
       }
@@ -55,7 +55,7 @@ class _DefaultSocialTextFieldControllerState extends State<DefaultSocialTextFiel
       setState(() {
         _detectedType = detection.type;
       });
-      if(doesHaveBuilderForCurrentType() && widget.scrollController != null){
+      if(doesHaveBuilderForCurrentType() && widget.scrollController != null && widget.textEditingController.selection.baseOffset >= 0){
 
         var baseText = widget.textEditingController.text.substring(0,widget.textEditingController.selection.baseOffset);
         var defaultTextStyle = TextStyle();
