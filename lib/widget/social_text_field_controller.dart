@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:math';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -57,6 +56,7 @@ class _DefaultSocialTextFieldControllerState extends State<DefaultSocialTextFiel
     print("HeightMap: $heightMap");
   }
 
+  ///Shows the widget that hes been set with the [widget.detectionBuilders]. return empty Container if noting found
   void onDetectContent(SocialContentDetection detection){
     if(detection.type != _detectedType){
       setState(() {
@@ -75,6 +75,7 @@ class _DefaultSocialTextFieldControllerState extends State<DefaultSocialTextFiel
     }
   }
 
+  ///Used for calculating size for text. scrolls the main content if it is positioned under the detected content widget.
   Size getTextRectSize({required width,required String text,required TextStyle style}) {
     final TextPainter textPainter = TextPainter(
         text: TextSpan(text: text, style: style), textDirection: TextDirection.ltr)
@@ -82,10 +83,12 @@ class _DefaultSocialTextFieldControllerState extends State<DefaultSocialTextFiel
     return textPainter.size;
   }
 
+  ///return true if content type set
   bool doesHaveBuilderForCurrentType(){
     return (widget.detectionBuilders?.containsKey(_detectedType) ?? false);
   }
 
+  ///return bottom value of main content
   double getChildBottomPosition(){
     if(!doesHaveBuilderForCurrentType() || (!widget.willResizeChild)){
       return 0;
@@ -94,6 +97,7 @@ class _DefaultSocialTextFieldControllerState extends State<DefaultSocialTextFiel
     return heightMap[_detectedType] ?? 0;
   }
 
+  ///return height for detected content, zero if not set.
   double getBuilderContentHeight(){
     if(!doesHaveBuilderForCurrentType() || (!widget.willResizeChild)){
       return 0;
@@ -102,6 +106,7 @@ class _DefaultSocialTextFieldControllerState extends State<DefaultSocialTextFiel
     return heightMap[_detectedType] ?? 0;
   }
 
+  ///returns detected content
   PreferredSize getDetectionContent(){
     if(!(widget.detectionBuilders?.containsKey(_detectedType) ?? false)){
       return PreferredSize(child: Container(), preferredSize: Size.zero);

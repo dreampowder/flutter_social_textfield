@@ -37,7 +37,6 @@ class _MyHomePageState extends State<MyHomePage> {
 
   @override
   Widget build(BuildContext context) {
-    var height = MediaQuery.of(context).size.height * 0.4;
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),

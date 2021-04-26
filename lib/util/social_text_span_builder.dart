@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_social_textfield/flutter_social_textfield.dart';
 
+///Builds [TextSpan] with the provided regular expression, stles and text.
+/// [defaultTextStyle] Optional default textstyle. used for detection types that has not been initialied
+/// [detectionTextStyles] required, used for setting up text styles for types found in [DetectedType] enum
+/// [regularExpressions] required, used for detecting [DetectedType] content. default regular expressions can be found in the plugin
 class SocialTextSpanBuilder{
 
   final TextStyle? defaultTextStyle;
@@ -12,6 +16,8 @@ class SocialTextSpanBuilder{
 
   SocialTextSpanBuilder(this.regularExpressions,this.defaultTextStyle,{this.detectionTextStyles = const {}});
 
+  ///Gets Text Style for [start,end] range.
+  ///return default text style if noting found.
   TextStyle getTextStyleForRange(int start, int end){
     TextStyle? textStyle;
     allMatches.keys.forEach((type) {
@@ -24,6 +30,7 @@ class SocialTextSpanBuilder{
     return textStyle ?? defaultTextStyle ?? TextStyle();
   }
 
+  ///returns TextSpan conaining all formatted content.
   TextSpan build(String text){
     regularExpressions.keys.forEach((type) {
       allMatches[type] = regularExpressions[type]!.allMatches(text).toList();
@@ -40,7 +47,6 @@ class SocialTextSpanBuilder{
     int cursorPosition = 0;
     for(int i = 0;i<orderedMatches.length;i++){
       var match = orderedMatches[i];
-      print("match:${match.start},${match.end}= ${text.substring(match.start, match.end)}");
       var subString = text.substring(match.start, match.end);
       bool willAddSpaceAtStart = subString.startsWith(" "); //Strangely, mention and hashtags start with an empty space, while web detections are correct
       root = getTextSpan(root, text.substring(cursorPosition,match.start + (willAddSpaceAtStart ? 1 : 0)), getTextStyleForRange(cursorPosition, match.start));
@@ -53,6 +59,9 @@ class SocialTextSpanBuilder{
     return root;
   }
 
+  ///Wraps text with style inside the root.
+  ///[root] optional, return TextSpan(text, style:style) if null
+  ///[style] TextStyle
   TextSpan getTextSpan(TextSpan? root, String text, TextStyle style){
     if(root == null){
       return TextSpan(text: text,style: style);
