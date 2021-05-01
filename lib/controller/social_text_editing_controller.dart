@@ -4,22 +4,21 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_social_textfield/flutter_social_textfield.dart';
 
-enum DetectedType{
-  mention, hashtag, url, plain_text
-}
 
-class SocialContentDetection{
-  final DetectedType type;
-  final TextRange range;
-  final String text;
-  SocialContentDetection(this.type, this.range, this.text);
 
-  @override
-  String toString() {
-    return 'SocialContentDetection{type: $type, range: $range, text: $text}';
-  }
-}
-
+///An improved [TextEditingController] for using with any widget that accepts [TextEditingController].
+///It uses [SocialTextSpanBuilder] for rendering the content.
+///[_detectionStream] returns content of the current cursor position. Positions are calculated by the cyrrent location of the word
+///Configuration is made by calling setter functions.
+///example:
+///     _textEditingController = SocialTextEditingController()
+///       ..setTextStyle(DetectedType.mention, TextStyle(color: Colors.purple,backgroundColor: Colors.purple.withAlpha(50)))
+///      ..setTextStyle(DetectedType.url, TextStyle(color: Colors.blue, decoration: TextDecoration.underline))
+///      ..setTextStyle(DetectedType.hashtag, TextStyle(color: Colors.blue, fontWeight: FontWeight.w600))
+///      ..setRegexp(DetectedType.mention, Regexp("your_custom_regex_pattern");
+///
+///There is also a helper function that can replaces range with the given value. In order to change cursor context, cursor moves to next word after replacement.
+///
 class SocialTextEditingController extends TextEditingController{
 
   StreamController<SocialContentDetection> _detectionStream = StreamController<SocialContentDetection>.broadcast();
@@ -93,8 +92,6 @@ class SocialTextEditingController extends TextEditingController{
 
   @override
   TextSpan buildTextSpan({TextStyle? style, required bool withComposing}) {
-    return SocialTextSpanBuilder(_regularExpressions,style,detectionTextStyles: detectionTextStyles).build(text);
+    return SocialTextSpanBuilder(regularExpressions: _regularExpressions,defaultTextStyle: style,detectionTextStyles: detectionTextStyles).build(text);
   }
-
-
 }

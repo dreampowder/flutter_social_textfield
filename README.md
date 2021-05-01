@@ -144,7 +144,9 @@ So if you just want to show formatted text content instead of using inside an ed
                     title: Text(widget.title),
                 ),
             body: Container(
-               child:_textSpanBuilder.build(context)
+               child:RichText(
+                  text:_textSpanBuilder.build(context)
+                )
             )// This trailing comma makes auto-formatting nicer for build methods.
         );  
     }   

@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_social_textfield/controller/social_text_editing_controller.dart';
+import 'package:flutter_social_textfield/model/detected_type_enum.dart';
+import 'package:flutter_social_textfield/model/social_content_detection_model.dart';
 
 /// DefaultSocialTextFieldController widget for wrapping the content inside a for automatically showing the relevant content for detected type. (i.e showing mention/user list when cursor is on the @mention/#hashtag text)
 /// [focusNode] required and also needs also to be attached to the TextField used by the SocialTextEditingController
