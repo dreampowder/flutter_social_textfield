@@ -118,6 +118,7 @@ The main goal is to provide an easy way to implement features that have been see
 flutter_social_textfield uses SocialTextSpanBuilder for rendering the text inside the attached textfield.
 So if you just want to show formatted text content instead of using inside an editor you can use it like this:
 
+With version 0.0.3 you can also implement onTapDetection function for adding tap gestures to detected strings. 
 
     void initBuilder(){
         final Map<DetectedType, RegExp> _regularExpressions = {
@@ -132,7 +133,7 @@ So if you just want to show formatted text content instead of using inside an ed
     
         final TextStyle _defaultTextStyle = TextStyle();
     
-        final _textSpanBuilder = SocialTextSpanBuilder(_regularExpressions,_defaultTextStyle,detectionTextStyles: _detectionTextStyles);
+        final _textSpanBuilder = SocialTextSpanBuilder(regularExpressions: _regularExpressions,defaultTextStyle:_defaultTextStyle,detectionTextStyles: _detectionTextStyles, onTapDetection: (detection){print("Tapped on detection: $detection");});
     }
 
     //And you can return RichText content bu calling build(context) method afterwards.
