@@ -1,3 +1,8 @@
+## [0.04] 19.05.2021
+
+* Fixed building issue with Flutter 2.2
+* Fixed Bugs in the example app
+
 ## [0.0.3] 01.05.2021
 
 * Added tap support for SocialTextSpanBuilder
