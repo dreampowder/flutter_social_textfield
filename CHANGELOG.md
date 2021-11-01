@@ -1,3 +1,6 @@
+## [0.0.6] 01.11.2021
+* Added IncludeOnlyCases and IgnoreCases propertied into SocialTextSpanBuilder(context).build() method. You can now ignore matches or include matches
+
 ## [0.0.5] 01.11.2021
 * Updated code documentation
 

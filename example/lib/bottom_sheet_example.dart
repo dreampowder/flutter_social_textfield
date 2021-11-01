@@ -95,7 +95,7 @@ class _BottomSheetControllerExampleScreenState extends State<BottomSheetControll
             controller: scrollController,
               itemBuilder: (context,index){
                 return ListTile(
-                  title: Text("Title ${index}"),
+                  title: Text("Title $index"),
                 );
           });
         },

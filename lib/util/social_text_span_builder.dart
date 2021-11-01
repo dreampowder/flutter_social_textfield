@@ -8,31 +8,46 @@ import 'package:flutter_social_textfield/model/social_content_detection_model.da
 /// [detectionTextStyles] required, used for setting up text styles for types found in [DetectedType] enum
 /// [regularExpressions] required, used for detecting [DetectedType] content. default regular expressions can be found in the plugin
 /// [onTapDetection] optional. When set, it assings [TapGestureRecognizer] to formatted content. It returns [SocialContentDetection] as response
+/// [ignoredTextStyle] optional. When set, content matched with "ignoreCases" of build function will return this text style, returns default text style if null.
 class SocialTextSpanBuilder{
 
   final Function(SocialContentDetection detection)? onTapDetection;
   final TextStyle? defaultTextStyle;
+  final TextStyle? ignoredTextStyle;
   final Map<DetectedType, TextStyle> detectionTextStyles;
 
   final Map<DetectedType, RegExp> regularExpressions;
 
   Map<DetectedType, List<RegExpMatch>?> allMatches = Map();
 
-  SocialTextSpanBuilder({required this.regularExpressions,required this.defaultTextStyle,this.detectionTextStyles = const {},this.onTapDetection});
+  SocialTextSpanBuilder({required this.regularExpressions,required this.defaultTextStyle,this.detectionTextStyles = const {},this.onTapDetection, this.ignoredTextStyle});
 
   ///Gets Text Style for [start,end] range.
   ///return TextStyle() style if nothing found.
-  MatchSearchResult getTextStyleForRange(int start, int end){
+  MatchSearchResult getTextStyleForRange(int start, int end, {List<String>? ignoreCases, List<String>? includeOnlyCases}){
 
     TextStyle? textStyle;
     DetectedType detectedType = DetectedType.plain_text;
     String text = "";
     allMatches.keys.forEach((type) {
       var index = allMatches[type]!.indexWhere((match) => match.start == start && match.end == end);
+
       if(index != -1){
-        textStyle = detectionTextStyles[type];
-        detectedType = type;
         text = allMatches[type]![index].input.substring(start,end);
+        var isIgnored = false;
+        if(includeOnlyCases?.isNotEmpty ?? false){
+          isIgnored = (includeOnlyCases?.indexWhere((t)=>t == text.trim()) ?? -1) == -1;
+        }else{
+          isIgnored = (ignoreCases?.indexWhere((t)=>t == text.trim()) ?? -1) >= 0;
+        }
+        print("$ignoreCases: IsIgnored:$text, ${ignoreCases?.indexWhere((t)=>t == text)}");
+        if(isIgnored){
+          textStyle = ignoredTextStyle;
+          detectedType = DetectedType.plain_text;
+        }else{
+          textStyle = detectionTextStyles[type];
+          detectedType = type;
+        }
         return;
       }
     });
@@ -40,8 +55,12 @@ class SocialTextSpanBuilder{
   }
 
   ///returns TextSpan containing all formatted content.
-  TextSpan build(String text){
-    regularExpressions.keys.forEach((type) {
+  ///[text] Text Content
+  ///[ignoreCases] optional, when set, string values written in ignoreCases will be treated as Plain Text
+  ///[includeOnlyCases] optional, when set, only values found in this array will be detected, other values be treated as Plain Text
+  TextSpan build(String text, {List<String>? ignoreCases,List<String>? includeOnlyCases}){
+
+        regularExpressions.keys.forEach((type) {
       allMatches[type] = regularExpressions[type]!.allMatches(text).toList();
     });
     if(allMatches.isEmpty){
@@ -59,10 +78,10 @@ class SocialTextSpanBuilder{
       var subString = text.substring(match.start, match.end);
 
       bool willAddSpaceAtStart = subString.startsWith(" "); //Strangely, mention and hashtags start with an empty space, while web detections are correct
-      var firstSearch = getTextStyleForRange(cursorPosition, match.start);
+      var firstSearch = getTextStyleForRange(cursorPosition, match.start,ignoreCases: ignoreCases,includeOnlyCases: includeOnlyCases);
       root = getTextSpan(root, text.substring(cursorPosition,match.start + (willAddSpaceAtStart ? 1 : 0)), firstSearch.textStyle);
 
-      var secondSearch = getTextStyleForRange(match.start, match.end);
+      var secondSearch = getTextStyleForRange(match.start, match.end,ignoreCases: ignoreCases,includeOnlyCases: includeOnlyCases);
       TapGestureRecognizer? tapRecognizer2;
       if(onTapDetection != null){
         tapRecognizer2 = TapGestureRecognizer()..onTap = (){

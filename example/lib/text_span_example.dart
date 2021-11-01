@@ -60,6 +60,8 @@ class _SocialTextSpanExampleScreenState extends State<SocialTextSpanExampleScree
                     });
                   }
               ).build(exampleContent),
+              // ).build(exampleContent,ignoreCases: ["@dolor"]),
+              // ).build(exampleContent,includeOnlyCases: ["@dolor"]),
             ),
           ],
         ),

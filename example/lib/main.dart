@@ -1,11 +1,7 @@
-import 'dart:async';
-import 'dart:ui';
 
 import 'package:example/bottom_sheet_example.dart';
 import 'package:example/text_span_example.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_social_textfield/controller/social_text_editing_controller.dart';
-import 'package:flutter_social_textfield/flutter_social_textfield.dart';
 
 import 'default_controller_example.dart';
 
