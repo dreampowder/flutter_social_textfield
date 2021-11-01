@@ -1,5 +1,7 @@
-## [0.04] 19.05.2021
+## [0.0.5] 01.11.2021
+* Updated code documentation
 
+## [0.0.4] 19.05.2021
 * Fixed building issue with Flutter 2.2
 * Fixed Bugs in the example app
 

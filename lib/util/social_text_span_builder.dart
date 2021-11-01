@@ -21,7 +21,7 @@ class SocialTextSpanBuilder{
   SocialTextSpanBuilder({required this.regularExpressions,required this.defaultTextStyle,this.detectionTextStyles = const {},this.onTapDetection});
 
   ///Gets Text Style for [start,end] range.
-  ///return default text style if noting found.
+  ///return TextStyle() style if nothing found.
   MatchSearchResult getTextStyleForRange(int start, int end){
 
     TextStyle? textStyle;
@@ -75,7 +75,6 @@ class SocialTextSpanBuilder{
       }
       root = getTextSpan(root, text.substring(match.start+(willAddSpaceAtStart ? 1 : 0), match.end), secondSearch.textStyle,tapRecognizer: tapRecognizer2);
       cursorPosition = match.end;
-
     }
     if(cursorPosition < text.length-1){
       root = getTextSpan(root, text.substring(cursorPosition), getTextStyleForRange(cursorPosition, text.length).textStyle);
@@ -85,7 +84,9 @@ class SocialTextSpanBuilder{
 
   ///Wraps text with style inside the root.
   ///[root] optional, return TextSpan(text, style:style) if null
+  ///[text] main content text
   ///[style] TextStyle
+  ///[tapRecognizer] optional, tap action for detected content
   TextSpan getTextSpan(TextSpan? root, String text, TextStyle style,{TapGestureRecognizer? tapRecognizer}){
     if(root == null){
       return TextSpan(text: text,style: style,recognizer: tapRecognizer);
