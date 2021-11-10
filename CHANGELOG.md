@@ -1,3 +1,6 @@
+## [0.0.7] 10.11.2021
+* Updated url regex so it can detect url's with "-" in it. (thanks https://github.com/Bhupesh-V for contributing)
+
 ## [0.0.6] 01.11.2021
 * Added IncludeOnlyCases and IgnoreCases propertied into SocialTextSpanBuilder(context).build() method. You can now ignore matches or include matches
 

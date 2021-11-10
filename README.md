@@ -155,6 +155,8 @@ With version 0.0.3 you can also implement onTapDetection function for adding tap
 
 # Acknowledgements
 
+Thanks https://github.com/Bhupesh-V (@Bhupesh-V) for his contribution to url regex 👌
+
 This widget's default regular expressions taken from this wonderful widget:
 
 [detectable_text_field](https://pub.dev/packages/detectable_text_field)
