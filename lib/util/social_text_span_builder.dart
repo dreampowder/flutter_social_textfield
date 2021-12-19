@@ -40,7 +40,6 @@ class SocialTextSpanBuilder{
         }else{
           isIgnored = (ignoreCases?.indexWhere((t)=>t == text.trim()) ?? -1) >= 0;
         }
-        print("$ignoreCases: IsIgnored:$text, ${ignoreCases?.indexWhere((t)=>t == text)}");
         if(isIgnored){
           textStyle = ignoredTextStyle;
           detectedType = DetectedType.plain_text;

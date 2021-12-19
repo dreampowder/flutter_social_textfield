@@ -43,7 +43,6 @@ class _SocialTextSpanExampleScreenState extends State<SocialTextSpanExampleScree
                     DetectedType.url: TextStyle(color: Colors.blue, fontWeight: FontWeight.w600)
                   },
                   onTapDetection: (detection){
-                    print("Tapped Detection: $detection");
                     showDialog(context: context, builder: (context){
                       return AlertDialog(
                         title: Text("Tapped on detectoin"),

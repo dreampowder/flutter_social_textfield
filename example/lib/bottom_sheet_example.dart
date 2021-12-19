@@ -1,9 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_social_textfield/controller/social_text_editing_controller.dart';
 import 'package:flutter_social_textfield/flutter_social_textfield.dart';
-import 'package:flutter_social_textfield/model/detected_type_enum.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class BottomSheetControllerExampleScreen extends StatefulWidget {

@@ -55,7 +55,6 @@ class _DefaultSocialTextFieldControllerState extends State<DefaultSocialTextFiel
         heightMap[type] = 0;
       }
     });
-    print("HeightMap: $heightMap");
   }
 
   ///Shows the widget that hes been set with the [widget.detectionBuilders]. return empty Container if noting found
@@ -65,7 +64,6 @@ class _DefaultSocialTextFieldControllerState extends State<DefaultSocialTextFiel
         _detectedType = detection.type;
       });
       if(doesHaveBuilderForCurrentType() && widget.scrollController != null && widget.textEditingController.selection.baseOffset >= 0){
-
         var baseText = widget.textEditingController.text.substring(0,widget.textEditingController.selection.baseOffset);
         var defaultTextStyle = TextStyle();
         if(widget.textEditingController.detectionTextStyles.containsKey(DetectedType.plain_text)){
@@ -95,7 +93,6 @@ class _DefaultSocialTextFieldControllerState extends State<DefaultSocialTextFiel
     if(!doesHaveBuilderForCurrentType() || (!widget.willResizeChild)){
       return 0;
     }
-    print("${heightMap[_detectedType] ?? 0}");
     return heightMap[_detectedType] ?? 0;
   }
 
@@ -104,7 +101,6 @@ class _DefaultSocialTextFieldControllerState extends State<DefaultSocialTextFiel
     if(!doesHaveBuilderForCurrentType() || (!widget.willResizeChild)){
       return 0;
     }
-    print("${heightMap[_detectedType] ?? 0}");
     return heightMap[_detectedType] ?? 0;
   }
 

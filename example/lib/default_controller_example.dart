@@ -43,7 +43,6 @@ class _DefaultControllerExampleScreenState extends State<DefaultControllerExampl
 
   void onDetectContent(SocialContentDetection detection){
     lastDetection = detection;
-
   }
 
   @override

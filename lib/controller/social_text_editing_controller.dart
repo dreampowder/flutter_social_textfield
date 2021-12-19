@@ -50,34 +50,30 @@ class SocialTextEditingController extends TextEditingController{
   }
 
   void replaceRange(String newValue, TextRange range){
-    print("text.length = ${text.length}");
-    print("range.end: ${range.start + newValue.length}");
-    var willAddSpaceAtEnd = (text.length-1) <= (range.start + newValue.length);
-    var replacingText = "$newValue${willAddSpaceAtEnd ? " " : ""}";
-    var replacedText = text.replaceRange(range.start, range.end+1, replacingText);
-    var newCursorPosition = range.start+replacingText.length + (willAddSpaceAtEnd ? 0 : 1);
-    print("$willAddSpaceAtEnd new Position: $newCursorPosition, new Length: ${replacedText.length}");
-    // if(newCursorPosition == replacedText.length){
-    //   newCursorPosition -= 1;
-    // }
-    print("Length: ${replacedText.length}, ${newCursorPosition}");
-    if(newCursorPosition >= replacedText.length){
-      newCursorPosition = replacedText.length-1;
+    print("newValue: $newValue, range: $range: ${range.textInside(text)}");
+    var newText = text.replaceRange(range.start, range.end, newValue);
+    var newRange = TextRange(start: range.start, end: range.start + newValue.length);
+    print("Updated Range Content: [${newRange.textAfter(newText)}], text length: ${newText.length}, ${newRange.end}");
+    bool isAtTheEndOfText = (newRange.textAfter(newText) == " " && newRange.end == newText.length - 1);
+    if(isAtTheEndOfText){
+      newText += " ";
     }
-    value = value.copyWith(text: replacedText,selection: value.selection.copyWith(baseOffset: newCursorPosition,extentOffset: newCursorPosition),composing: value.composing);
+    TextSelection newTextSelection = TextSelection(baseOffset: newRange.end + 1, extentOffset: newRange.end + 1);
+    value = value.copyWith(text: newText, selection: newTextSelection);
   }
 
   void _processNewValue(TextEditingValue newValue){
     var currentPosition = newValue.selection.baseOffset;
     if(currentPosition == -1){
-      return;
+      currentPosition = 0;
     }
+
     var subString = newValue.text.substring(0,currentPosition);
+
     var lastPart = subString.split(" ").last.split("\n").last;
     var startIndex = currentPosition - lastPart.length;
     var detectionContent = newValue.text.substring(startIndex).split(" ").first.split("\n").first;
-    print("[$startIndex, ${startIndex + detectionContent.length-1}] lastPath: [$detectionContent]");
-    _detectionStream.add(SocialContentDetection(getType(detectionContent), TextRange(start: startIndex, end: startIndex + detectionContent.length-1), detectionContent));
+    _detectionStream.add(SocialContentDetection(getType(detectionContent), TextRange(start: startIndex, end: startIndex + detectionContent.length), detectionContent));
   }
   
   DetectedType getType(String word){
@@ -86,6 +82,10 @@ class SocialTextEditingController extends TextEditingController{
 
   @override
   set value(TextEditingValue newValue) {
+    // print("lengths:[${value.text.length}, ${newValue.text.length}] old: [${value.selection.baseOffset},${value.selection.extentOffset}] new: [${newValue.selection.baseOffset},${newValue.selection.extentOffset}]");
+    if(newValue.selection.baseOffset >= newValue.text.length){
+      newValue = newValue.copyWith(text: newValue.text.trimRight() + " ", selection: newValue.selection.copyWith(baseOffset: newValue.text.length -1  , extentOffset: newValue.text.length -1 ));
+    }
     _processNewValue(newValue);
     super.value = newValue;
   }
@@ -94,4 +94,6 @@ class SocialTextEditingController extends TextEditingController{
   TextSpan buildTextSpan({required BuildContext context, TextStyle? style, required bool withComposing}) {
     return SocialTextSpanBuilder(regularExpressions: _regularExpressions,defaultTextStyle: style,detectionTextStyles: detectionTextStyles).build(text);
   }
+
+
 }
