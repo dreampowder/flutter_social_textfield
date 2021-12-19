@@ -8,7 +8,7 @@ class SocialTextSpanExampleScreen extends StatefulWidget {
 
 class _SocialTextSpanExampleScreenState extends State<SocialTextSpanExampleScreen> {
 
-  String exampleContent = "Lorem ipsum @dolor sit amet, consectetur adipiscing elit, sed do eiusmod @tempor incididunt ut labore et dolore magna aliqua. Ut #tellus elementum sagittis vitae et. Id #velit ut tortor pretium viverra suspendisse. Massa placerat duis ultricies lacus sed. @Placerat in egestas erat imperdiet sed euismod nisi. Velit scelerisque in dictum non consectetur. Massa id neque aliquam vestibulum morbi blandit. Purus sit amet volutpat consequat mauris nunc congue nisi. Ut diam quam nulla porttitor massa id. Sed faucibus turpis in eu mi. Rhoncus mattis rhoncus urna neque. Vel eros donec ac odio. Elit scelerisque mauris pellentesque pulvinar pellentesque habitant morbi tristique senectus. Lobortis elementum nibh tellus molestie nunc non blandit massa enim. Amet consectetur adipiscing elit duis tristique @sollicitudin nibh sit amet.\nhttp://www.google.com\n\https://bhupesh-v.github.io/";
+  String exampleContent = "Lorem ipsum @dolor sit amet, consectetur adipiscing elit,sed do eiusmod @tempor incididunt ut labore email@ma et dolore magna aliqua. Ut #tellus elementum sagittis vitae et. Id #velit ut tortor pretium viverra suspendisse. Massa placerat duis ultricies lacus sed. @Placerat in egestas erat imperdiet sed euismod nisi. Velit scelerisque in dictum non consectetur. Massa id neque aliquam vestibulum morbi blandit. Purus sit amet volutpat consequat mauris nunc congue nisi. Ut diam quam nulla porttitor massa id. Sed faucibus turpis in eu mi. Rhoncus mattis rhoncus urna neque. Vel eros donec ac odio. Elit scelerisque mauris pellentesque pulvinar pellentesque habitant morbi tristique senectus. Lobortis elementum nibh tellus molestie nunc non blandit massa enim. Amet consectetur adipiscing elit duis tristique @sollicitudin nibh sit amet.\nhttp://www.google.com\n\https://bhupesh-v.github.io/ \n";
 
   @override
   Widget build(BuildContext context) {
@@ -34,13 +34,13 @@ class _SocialTextSpanExampleScreenState extends State<SocialTextSpanExampleScree
                   regularExpressions: {
                     DetectedType.mention:atSignRegExp,
                     DetectedType.hashtag: hashTagRegExp,
-                    DetectedType.url: urlRegex
+                    DetectedType.url: urlRegex,
                   },
                   defaultTextStyle: TextStyle(color: Colors.black),
                   detectionTextStyles: {
                     DetectedType.mention:TextStyle(color: Colors.purple,backgroundColor: Colors.purple.withAlpha(50)),
                     DetectedType.hashtag: TextStyle(color: Colors.blue, decoration: TextDecoration.underline),
-                    DetectedType.url: TextStyle(color: Colors.blue, fontWeight: FontWeight.w600)
+                    DetectedType.url: TextStyle(color: Colors.blue, fontWeight: FontWeight.w600),
                   },
                   onTapDetection: (detection){
                     showDialog(context: context, builder: (context){

@@ -1,3 +1,7 @@
+## [0.0.8] 19.11.2021
+* Fixed cursor jumping to the beginning bug fixed (again 😅)
+* Improved documentation, enhanced default social text field example with 'ClampingScrollPhysics'
+
 ## [0.0.7] 10.11.2021
 * Updated url regex so it can detect url's with "-" in it. (thanks https://github.com/Bhupesh-V for contributing)
 

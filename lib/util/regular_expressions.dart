@@ -16,6 +16,8 @@ const _arabicLetters = '\u0621-\u064A';
 
 const _thaiLetters = '\u0E00-\u0E7F';
 
+const _turkishLetters = 'ğüşıöçĞÜŞİÖÇ';
+
 const detectionContentLetters = _symbols +
     _numbers +
     _englishLetters +
@@ -23,7 +25,8 @@ const detectionContentLetters = _symbols +
     _koreanLetters +
     _spanishLetters +
     _arabicLetters +
-    _thaiLetters;
+    _thaiLetters +
+    _turkishLetters;
 
 // const urlRegexContent = "((http|https)://)(www.)?" +
 //     "[a-zA-Z0-9@:%._\\+~#?&//=]" +

@@ -63,6 +63,7 @@ class _DefaultControllerExampleScreenState extends State<DefaultControllerExampl
             children: <Widget>[
               Expanded(
                 child: TextField(
+                  scrollPhysics: ClampingScrollPhysics(),
                   scrollController: _scrollController,
                   focusNode: _focusNode,
                   controller: _textEditingController,

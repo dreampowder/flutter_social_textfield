@@ -107,6 +107,43 @@ The Stream Subscriptoin returns SocialContentDetection class:
 ## DefaultSocialTextFieldController
 
 I've implemented an experimental widget for ease of use. DefaultSocialTextFieldController puts the main content inside a Stack and allows users to show relevant content when curser comes over a detected content
+
+Please notice the 'scrollPhysics' property of the TextField; 
+```dart
+DefaultSocialTextFieldController(
+        focusNode: _focusNode,
+        scrollController: _scrollController,
+        textEditingController: _textEditingController,
+        child: Container(
+          padding: EdgeInsets.all(8),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              Expanded(
+                child: TextField(
+                  scrollPhysics: ClampingScrollPhysics(), //Use this for unnecessary scroll bounces
+                  scrollController: _scrollController,
+                  focusNode: _focusNode,
+                  controller: _textEditingController,
+                  expands: true,
+                  maxLines: null,
+                  minLines: null,
+                  decoration: InputDecoration(
+                      hintText: "Please Enter a Text"
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+        detectionBuilders: {
+          DetectedType.mention:(context)=>mentionContent(height),
+          DetectedType.hashtag:(context)=>hashtagContent(height),
+          DetectedType.url:(context)=>urlContent(height)
+        },
+      )
+```
+
 ![DefaultSocialTextFieldController in action](https://github.com/dreampowder/flutter_social_textfield/blob/main/readme_contents/default_text_controller.gif)
 
 ### Using DefaultSocialTextFieldController
