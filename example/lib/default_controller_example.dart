@@ -9,16 +9,16 @@ class DefaultControllerExampleScreen extends StatefulWidget {
 }
 
 class _DefaultControllerExampleScreenState extends State<DefaultControllerExampleScreen> {
-  SocialTextEditingController _textEditingController;
-  TextRange lastDetectedRange;
+  late final SocialTextEditingController _textEditingController;
+  late final TextRange lastDetectedRange;
 
   bool isSelectorOpen = false;
   FocusNode _focusNode = FocusNode();
   ScrollController _scrollController = ScrollController();
 
-  SocialContentDetection lastDetection;
+  SocialContentDetection lastDetection = SocialContentDetection(DetectedType.plain_text, TextRange.empty, "");
 
-  StreamSubscription<SocialContentDetection> _streamSubscription;
+  late final StreamSubscription<SocialContentDetection> _streamSubscription;
 
   @override
   void dispose() {

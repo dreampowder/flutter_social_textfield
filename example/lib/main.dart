@@ -3,6 +3,7 @@ import 'package:example/bottom_sheet_example.dart';
 import 'package:example/text_span_example.dart';
 import 'package:flutter/material.dart';
 
+import 'default_controller_above.example.dart';
 import 'default_controller_example.dart';
 
 void main() {
@@ -24,7 +25,7 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key key, this.title}) : super(key: key);
+  MyHomePage({Key? key, required this.title}) : super(key: key);
 
   final String title;
 
@@ -50,6 +51,12 @@ class _MyHomePageState extends State<MyHomePage> {
             subtitle: Text("Editable Text field implementations"),
             trailing: Icon(Icons.chevron_right),
             onTap: ()=>Navigator.of(context).push(MaterialPageRoute(builder: (_)=>DefaultControllerExampleScreen())),
+          ),
+          ListTile(
+            title: Text("DefaultSocialTextFieldController with above detection field example (NEW!)"),
+            subtitle: Text("Editable Text field implementations with above detection field for places like chat pages"),
+            trailing: Icon(Icons.chevron_right),
+            onTap: ()=>Navigator.of(context).push(MaterialPageRoute(builder: (_)=>DefaultControllerAboveExampleScreen())),
           ),
           ListTile(
             title: Text("SocialTextSpanBuilder Bottom Sheet Example"),

@@ -1,3 +1,8 @@
+## [0.0.9] 06.01.2022
+* Added new presentation mode for DefaultSocialTextFieldController. You can now present detection dialog above the textfield
+* Updated example code for new above text field presentation of DefaultSocialTextFieldController
+* Added vietnamese text detection support (experimental, thanks to @minh-dai for additions.)
+
 ## [0.0.8] 19.11.2021
 * Fixed cursor jumping to the beginning bug fixed (again 😅)
 * Improved documentation, enhanced default social text field example with 'ClampingScrollPhysics'

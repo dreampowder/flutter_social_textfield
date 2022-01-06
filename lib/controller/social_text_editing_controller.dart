@@ -50,10 +50,10 @@ class SocialTextEditingController extends TextEditingController{
   }
 
   void replaceRange(String newValue, TextRange range){
-    print("newValue: $newValue, range: $range: ${range.textInside(text)}");
+    // print("newValue: $newValue, range: $range: ${range.textInside(text)}");
     var newText = text.replaceRange(range.start, range.end, newValue);
     var newRange = TextRange(start: range.start, end: range.start + newValue.length);
-    print("Updated Range Content: [${newRange.textAfter(newText)}], text length: ${newText.length}, ${newRange.end}");
+    // print("Updated Range Content: [${newRange.textAfter(newText)}], text length: ${newText.length}, ${newRange.end}");
     bool isAtTheEndOfText = (newRange.textAfter(newText) == " " && newRange.end == newText.length - 1);
     if(isAtTheEndOfText){
       newText += " ";
@@ -84,7 +84,10 @@ class SocialTextEditingController extends TextEditingController{
   set value(TextEditingValue newValue) {
     // print("lengths:[${value.text.length}, ${newValue.text.length}] old: [${value.selection.baseOffset},${value.selection.extentOffset}] new: [${newValue.selection.baseOffset},${newValue.selection.extentOffset}]");
     if(newValue.selection.baseOffset >= newValue.text.length){
-      newValue = newValue.copyWith(text: newValue.text.trimRight() + " ", selection: newValue.selection.copyWith(baseOffset: newValue.text.length -1  , extentOffset: newValue.text.length -1 ));
+      newValue = newValue
+          .copyWith(
+          text: newValue.text.trimRight() + " ",
+          selection: newValue.selection.copyWith(baseOffset: newValue.text.length, extentOffset: newValue.text.length));
     }
     _processNewValue(newValue);
     super.value = newValue;

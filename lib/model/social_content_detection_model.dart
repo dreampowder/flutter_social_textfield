@@ -6,6 +6,7 @@ import 'package:flutter_social_textfield/model/detected_type_enum.dart';
 ///[range] Range of detection
 ///[text] substring content created by using [range] value.
 class SocialContentDetection{
+
   final DetectedType type;
   final TextRange range;
   final String text;

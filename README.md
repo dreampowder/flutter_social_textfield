@@ -108,9 +108,18 @@ The Stream Subscriptoin returns SocialContentDetection class:
 
 I've implemented an experimental widget for ease of use. DefaultSocialTextFieldController puts the main content inside a Stack and allows users to show relevant content when curser comes over a detected content
 
+As with version 0.0.9 There are 2 different types of presentation of detection content: 
+
+Detection Presentation Mode
+
+`DetectionPresentationMode.split_screen` : Shows detection view but moving from bottom to determined widget size. useful for full screen textfields like text editors
+
+`DetectionPresentationMode.above_text_field` : Useful for showing detection view from above the textfield. The location of textfield is detected from the FocusNode automatically.
+
 Please notice the 'scrollPhysics' property of the TextField; 
 ```dart
 DefaultSocialTextFieldController(
+        detectionPresentationMode: DetectionPresentationMode.above_text_field,
         focusNode: _focusNode,
         scrollController: _scrollController,
         textEditingController: _textEditingController,

@@ -5,7 +5,7 @@ import 'package:flutter_social_textfield/flutter_social_textfield.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class BottomSheetControllerExampleScreen extends StatefulWidget {
-  const BottomSheetControllerExampleScreen({Key key}) : super(key: key);
+  const BottomSheetControllerExampleScreen({Key? key}) : super(key: key);
 
   @override
   _BottomSheetControllerExampleScreenState createState() => _BottomSheetControllerExampleScreenState();
@@ -14,7 +14,7 @@ class BottomSheetControllerExampleScreen extends StatefulWidget {
 class _BottomSheetControllerExampleScreenState extends State<BottomSheetControllerExampleScreen> {
 
   SocialTextEditingController _socialTextEditingController = SocialTextEditingController();
-  StreamSubscription<SocialContentDetection> _streamSubscription;
+  late final StreamSubscription<SocialContentDetection> _streamSubscription;
 
   GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   bool isShowingModalBottomSheet = false;

@@ -6,6 +6,14 @@ import 'package:flutter_social_textfield/controller/social_text_editing_controll
 import 'package:flutter_social_textfield/model/detected_type_enum.dart';
 import 'package:flutter_social_textfield/model/social_content_detection_model.dart';
 
+/// Detection Presentation Mode
+/// [DetectionPresentationMode.split_screen] : Shows detection view but moving from bottom to determined widget size. useful for full screen textfields like text editors
+/// [DetectionPresentationMode.above_text_field] : Useful for showing detection view from above the textfield. The location of textfield is detected from the FocusNode automatically.
+enum DetectionPresentationMode{
+  split_screen,
+  above_text_field
+}
+
 /// DefaultSocialTextFieldController widget for wrapping the content inside a for automatically showing the relevant content for detected type. (i.e showing mention/user list when cursor is on the @mention/#hashtag text)
 /// [focusNode] required and also needs also to be attached to the TextField used by the SocialTextEditingController
 /// [textEditingController] required and needs also to be attached to the same TextField
@@ -13,6 +21,7 @@ import 'package:flutter_social_textfield/model/social_content_detection_model.da
 /// [child] required, must contain a TextField with the same [textEditingController]
 /// [detectionBuilders] builders for relevant [DetectedType]. nothing is shown if a type does not have a builder
 /// [willResizeChild] the efault value is true. changes the main content size when detection content has been shown.
+/// [detectionPresentationMode] Default value is "[DetectionPresentationMode.split_screen]".
 class DefaultSocialTextFieldController extends StatefulWidget {
 
   final FocusNode focusNode;
@@ -21,7 +30,8 @@ class DefaultSocialTextFieldController extends StatefulWidget {
   final Widget child;
   final Map<DetectedType, PreferredSize Function(BuildContext context)>? detectionBuilders;
   final bool willResizeChild;
-  DefaultSocialTextFieldController({required this.child,required this.textEditingController,required this.focusNode, this.detectionBuilders,this.scrollController,this.willResizeChild = true});
+  final DetectionPresentationMode detectionPresentationMode;
+  DefaultSocialTextFieldController({required this.child,required this.textEditingController,required this.focusNode, this.detectionBuilders,this.scrollController,this.willResizeChild = true,this.detectionPresentationMode = DetectionPresentationMode.split_screen});
 
   @override
   _DefaultSocialTextFieldControllerState createState() => _DefaultSocialTextFieldControllerState();
@@ -104,6 +114,17 @@ class _DefaultSocialTextFieldControllerState extends State<DefaultSocialTextFiel
     return heightMap[_detectedType] ?? 0;
   }
 
+  double findAndGetTextFieldTopPosition(){
+    var renderObject = widget.focusNode.context?.findRenderObject();
+    if(!(renderObject is RenderBox)){
+      return 0.0;
+    }
+    RenderBox box = renderObject as RenderBox;
+    Offset position = box.localToGlobal(Offset.zero); //this is global position
+    double y = position.dy; //
+    return MediaQuery.of(context).size.height - y ;
+  }
+
   ///returns detected content
   PreferredSize getDetectionContent(){
     if(!(widget.detectionBuilders?.containsKey(_detectedType) ?? false)){
@@ -114,23 +135,45 @@ class _DefaultSocialTextFieldControllerState extends State<DefaultSocialTextFiel
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        AnimatedPositioned(
-            duration: animationDuration,
-            bottom: 0,
-            left: 0,
-            right: 0,
-            height: getBuilderContentHeight(),
-            child: getDetectionContent()),
-        AnimatedPositioned(
-          duration: animationDuration,
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: getChildBottomPosition(),
-          child: widget.child),
-      ],
-    );
+    if(widget.detectionPresentationMode == DetectionPresentationMode.split_screen){
+      return Stack(
+        children: [
+          AnimatedPositioned(
+              duration: animationDuration,
+              bottom: 0,
+              left: 0,
+              right: 0,
+              height: getBuilderContentHeight(),
+              child: getDetectionContent()),
+          AnimatedPositioned(
+              duration: animationDuration,
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: getChildBottomPosition(),
+              child: widget.child),
+        ],
+      );
+    }else{
+      return Stack(
+        children: [
+
+          AnimatedPositioned(
+              duration: animationDuration,
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              child: widget.child),
+          AnimatedPositioned(
+              duration: animationDuration,
+              bottom: findAndGetTextFieldTopPosition(),
+              left: 0,
+              right: 0,
+              height: getBuilderContentHeight(),
+              child: getDetectionContent()),
+        ],
+      );
+    }
   }
 }
