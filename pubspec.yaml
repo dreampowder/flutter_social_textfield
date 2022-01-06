@@ -1,6 +1,6 @@
 name: flutter_social_textfield
 description: TextEditingController and RichText / TextSpan builder with hashtag, url and mention detection with Regular Expressions. Also with tap support.
-version: 0.0.8
+version: 0.0.9
 homepage: https://github.com/dreampowder/flutter_social_textfield
 
 environment:
