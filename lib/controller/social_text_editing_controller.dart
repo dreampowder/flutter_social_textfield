@@ -82,13 +82,22 @@ class SocialTextEditingController extends TextEditingController{
 
   @override
   set value(TextEditingValue newValue) {
-    // print("lengths:[${value.text.length}, ${newValue.text.length}] old: [${value.selection.baseOffset},${value.selection.extentOffset}] new: [${newValue.selection.baseOffset},${newValue.selection.extentOffset}]");
+
     if(newValue.selection.baseOffset >= newValue.text.length){
+      print("will add space");
       newValue = newValue
           .copyWith(
           text: newValue.text.trimRight() + " ",
           selection: newValue.selection.copyWith(baseOffset: newValue.text.length, extentOffset: newValue.text.length));
     }
+
+    if(newValue.text == " "){
+      newValue = newValue
+          .copyWith(
+          text: "",
+          selection: newValue.selection.copyWith(baseOffset: 0, extentOffset: 0));
+    }
+
     _processNewValue(newValue);
     super.value = newValue;
   }

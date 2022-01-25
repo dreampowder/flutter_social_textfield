@@ -24,6 +24,7 @@ class _BottomSheetControllerExampleScreenState extends State<BottomSheetControll
   @override
   void dispose() {
     _streamSubscription.cancel();
+    _socialTextEditingController.dispose();
     super.dispose();
   }
 
@@ -43,7 +44,6 @@ class _BottomSheetControllerExampleScreenState extends State<BottomSheetControll
   void showMentionBottomSheet(){
     if(_panelController.isPanelClosed){
       _panelController.animatePanelToPosition(0.4);
-
     }
     // if(isShowingModalBottomSheet){
     //   return;
