@@ -1,3 +1,9 @@
+## [0.1.0] 25.02.2022
+
+* Added persian language support for detections
+* Fixed Vietnamese language detection [thanks @minh-dai]
+* Fixed the issue where an empty space added to an empty text editor which results hint not showing up.
+
 ## [0.0.9] 06.01.2022
 * Added new presentation mode for DefaultSocialTextFieldController. You can now present detection dialog above the textfield
 * Updated example code for new above text field presentation of DefaultSocialTextFieldController
