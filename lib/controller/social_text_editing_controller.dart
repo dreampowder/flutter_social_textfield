@@ -90,14 +90,12 @@ class SocialTextEditingController extends TextEditingController{
           text: newValue.text.trimRight() + " ",
           selection: newValue.selection.copyWith(baseOffset: newValue.text.length, extentOffset: newValue.text.length));
     }
-
     if(newValue.text == " "){
       newValue = newValue
           .copyWith(
           text: "",
           selection: newValue.selection.copyWith(baseOffset: 0, extentOffset: 0));
     }
-
     _processNewValue(newValue);
     super.value = newValue;
   }
