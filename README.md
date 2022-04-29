@@ -86,7 +86,7 @@ don't forget to unsubscribe on dispose.
 
     @override
     void dispose() {
-        _detectionStream.close();
+        _streamSubscription.cancel();
         super.dispose();
     }
 
