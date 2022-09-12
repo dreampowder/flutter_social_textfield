@@ -35,6 +35,7 @@ class SocialTextEditingController extends TextEditingController{
     DetectedType.mention:atSignRegExp,
     DetectedType.hashtag:hashTagRegExp,
     DetectedType.url:urlRegex,
+    DetectedType.emoji:emojiRegex,
   };
 
   StreamSubscription<SocialContentDetection> subscribeToDetection(Function(SocialContentDetection detected) listener){
