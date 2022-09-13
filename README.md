@@ -10,6 +10,7 @@ Current detection types are:
 * HashTag (#): Texts start with #
 * Mention (@): Text start with @ sign
 * Web Links: Can detect web links
+* Emojis: can detect emojis [thanks @moazh]
 
 You can see the supported detection types from DetectedType enum
 

@@ -1,3 +1,7 @@
+## [0.1.1] 13.09.2022
+
+* Added emoji detection support [thanks @moazh]
+
 ## [0.1.0] 25.02.2022
 
 * Added persian language support for detections
