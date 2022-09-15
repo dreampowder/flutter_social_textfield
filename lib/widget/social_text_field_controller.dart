@@ -9,10 +9,7 @@ import 'package:flutter_social_textfield/model/social_content_detection_model.da
 /// Detection Presentation Mode
 /// [DetectionPresentationMode.split_screen] : Shows detection view but moving from bottom to determined widget size. useful for full screen textfields like text editors
 /// [DetectionPresentationMode.above_text_field] : Useful for showing detection view from above the textfield. The location of textfield is detected from the FocusNode automatically.
-enum DetectionPresentationMode{
-  split_screen,
-  above_text_field
-}
+enum DetectionPresentationMode { split_screen, above_text_field }
 
 /// DefaultSocialTextFieldController widget for wrapping the content inside a for automatically showing the relevant content for detected type. (i.e showing mention/user list when cursor is on the @mention/#hashtag text)
 /// [focusNode] required and also needs also to be attached to the TextField used by the SocialTextEditingController
@@ -23,22 +20,30 @@ enum DetectionPresentationMode{
 /// [willResizeChild] the efault value is true. changes the main content size when detection content has been shown.
 /// [detectionPresentationMode] Default value is "[DetectionPresentationMode.split_screen]".
 class DefaultSocialTextFieldController extends StatefulWidget {
-
   final FocusNode focusNode;
   final ScrollController? scrollController;
   final SocialTextEditingController textEditingController;
   final Widget child;
-  final Map<DetectedType, PreferredSize Function(BuildContext context)>? detectionBuilders;
+  final Map<DetectedType, PreferredSize Function(BuildContext context)>?
+      detectionBuilders;
   final bool willResizeChild;
   final DetectionPresentationMode detectionPresentationMode;
-  DefaultSocialTextFieldController({required this.child,required this.textEditingController,required this.focusNode, this.detectionBuilders,this.scrollController,this.willResizeChild = true,this.detectionPresentationMode = DetectionPresentationMode.split_screen});
+  DefaultSocialTextFieldController(
+      {required this.child,
+      required this.textEditingController,
+      required this.focusNode,
+      this.detectionBuilders,
+      this.scrollController,
+      this.willResizeChild = true,
+      this.detectionPresentationMode = DetectionPresentationMode.split_screen});
 
   @override
-  _DefaultSocialTextFieldControllerState createState() => _DefaultSocialTextFieldControllerState();
+  _DefaultSocialTextFieldControllerState createState() =>
+      _DefaultSocialTextFieldControllerState();
 }
 
-class _DefaultSocialTextFieldControllerState extends State<DefaultSocialTextFieldController> {
-
+class _DefaultSocialTextFieldControllerState
+    extends State<DefaultSocialTextFieldController> {
   bool willShowDetectionContent = false;
   DetectedType _detectedType = DetectedType.plain_text;
 
@@ -57,85 +62,110 @@ class _DefaultSocialTextFieldControllerState extends State<DefaultSocialTextFiel
   @override
   void initState() {
     super.initState();
-    _streamSubscription = widget.textEditingController.subscribeToDetection(onDetectContent);
+    _streamSubscription =
+        widget.textEditingController.subscribeToDetection(onDetectContent);
     DetectedType.values.forEach((type) {
       if (widget.detectionBuilders?.containsKey(type) ?? false) {
-        heightMap[type] = widget.detectionBuilders?[type]!(context).preferredSize.height ?? 0.0;
+        heightMap[type] =
+            widget.detectionBuilders?[type]!(context).preferredSize.height ??
+                0.0;
       } else {
         heightMap[type] = 0;
       }
     });
   }
 
+  @override
+  void didUpdateWidget(covariant DefaultSocialTextFieldController oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    _streamSubscription =
+        widget.textEditingController.subscribeToDetection(onDetectContent);
+  }
+
   ///Shows the widget that hes been set with the [widget.detectionBuilders]. return empty Container if noting found
-  void onDetectContent(SocialContentDetection detection){
-    if(detection.type != _detectedType){
+  void onDetectContent(SocialContentDetection detection) {
+    if (detection.type != _detectedType) {
       setState(() {
         _detectedType = detection.type;
       });
-      if(doesHaveBuilderForCurrentType() && widget.scrollController != null && widget.textEditingController.selection.baseOffset >= 0){
-        var baseText = widget.textEditingController.text.substring(0,widget.textEditingController.selection.baseOffset);
+      if (doesHaveBuilderForCurrentType() &&
+          widget.scrollController != null &&
+          widget.textEditingController.selection.baseOffset >= 0) {
+        var baseText = widget.textEditingController.text
+            .substring(0, widget.textEditingController.selection.baseOffset);
         var defaultTextStyle = TextStyle();
-        if(widget.textEditingController.detectionTextStyles.containsKey(DetectedType.plain_text)){
-          defaultTextStyle = widget.textEditingController.detectionTextStyles[DetectedType.plain_text]!;
+        if (widget.textEditingController.detectionTextStyles
+            .containsKey(DetectedType.plain_text)) {
+          defaultTextStyle = widget.textEditingController
+              .detectionTextStyles[DetectedType.plain_text]!;
         }
-        var estimatedSize = getTextRectSize(width: widget.focusNode.size.width, text: baseText, style: defaultTextStyle);
-        Future.delayed(animationDuration,()=>widget.scrollController?.animateTo(estimatedSize.height, duration: animationDuration, curve: Curves.easeInOut));
+        var estimatedSize = getTextRectSize(
+            width: widget.focusNode.size.width,
+            text: baseText,
+            style: defaultTextStyle);
+        Future.delayed(
+            animationDuration,
+            () => widget.scrollController?.animateTo(estimatedSize.height,
+                duration: animationDuration, curve: Curves.easeInOut));
       }
     }
   }
 
   ///Used for calculating size for text. scrolls the main content if it is positioned under the detected content widget.
-  Size getTextRectSize({required width,required String text,required TextStyle style}) {
+  Size getTextRectSize(
+      {required width, required String text, required TextStyle style}) {
     final TextPainter textPainter = TextPainter(
-        text: TextSpan(text: text, style: style), textDirection: TextDirection.ltr)
+        text: TextSpan(text: text, style: style),
+        textDirection: TextDirection.ltr)
       ..layout(minWidth: 0, maxWidth: width);
     return textPainter.size;
   }
 
   ///return true if content type set
-  bool doesHaveBuilderForCurrentType(){
+  bool doesHaveBuilderForCurrentType() {
     return (widget.detectionBuilders?.containsKey(_detectedType) ?? false);
   }
 
   ///return bottom value of main content
-  double getChildBottomPosition(){
-    if(!doesHaveBuilderForCurrentType() || (!widget.willResizeChild)){
+  double getChildBottomPosition() {
+    if (!doesHaveBuilderForCurrentType() || (!widget.willResizeChild)) {
       return 0;
     }
     return heightMap[_detectedType] ?? 0;
   }
 
   ///return height for detected content, zero if not set.
-  double getBuilderContentHeight(){
-    if(!doesHaveBuilderForCurrentType() || (!widget.willResizeChild)){
+  double getBuilderContentHeight() {
+    if (!doesHaveBuilderForCurrentType() || (!widget.willResizeChild)) {
       return 0;
     }
     return heightMap[_detectedType] ?? 0;
   }
 
-  double findAndGetTextFieldTopPosition(){
+  double findAndGetTextFieldTopPosition() {
     var renderObject = widget.focusNode.context?.findRenderObject();
-    if(!(renderObject is RenderBox)){
+    if (!(renderObject is RenderBox)) {
       return 0.0;
     }
     RenderBox box = renderObject as RenderBox;
     Offset position = box.localToGlobal(Offset.zero); //this is global position
     double y = position.dy; //
-    return MediaQuery.of(context).size.height - y ;
+    return MediaQuery.of(context).size.height - y;
   }
 
   ///returns detected content
-  PreferredSize getDetectionContent(){
-    if(!(widget.detectionBuilders?.containsKey(_detectedType) ?? false)){
+  PreferredSize getDetectionContent() {
+    if (!(widget.detectionBuilders?.containsKey(_detectedType) ?? false)) {
       return PreferredSize(child: Container(), preferredSize: Size.zero);
     }
-    return widget.detectionBuilders?[_detectedType]!(context) ?? PreferredSize(child: Container(), preferredSize: Size.zero);
+    return widget.detectionBuilders?[_detectedType]!(context) ??
+        PreferredSize(child: Container(), preferredSize: Size.zero);
   }
 
   @override
   Widget build(BuildContext context) {
-    if(widget.detectionPresentationMode == DetectionPresentationMode.split_screen){
+    if (widget.detectionPresentationMode ==
+        DetectionPresentationMode.split_screen) {
       return Stack(
         children: [
           AnimatedPositioned(
@@ -154,10 +184,9 @@ class _DefaultSocialTextFieldControllerState extends State<DefaultSocialTextFiel
               child: widget.child),
         ],
       );
-    }else{
+    } else {
       return Stack(
         children: [
-
           AnimatedPositioned(
               duration: animationDuration,
               top: 0,
