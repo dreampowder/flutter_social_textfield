@@ -1,3 +1,8 @@
+## [0.1.2] 19.09.2022
+
+* Fixed a bug where it was impossible to delete text content or text content reappears after deletion
+* Added stream subscription into didUpdateWidget controller. [thanks @sipanpetrosyan]
+
 ## [0.1.1] 13.09.2022
 
 * Added emoji detection support [thanks @moazh]

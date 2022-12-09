@@ -88,6 +88,7 @@ class _DefaultControllerAboveExampleScreenState extends State<DefaultControllerA
                   decoration: InputDecoration(
                     hintText: "Type your message",
                     // border: OutlineInputBorder()
+                    suffix: IconButton(icon: Icon(Icons.send),onPressed: (){},)
                   ),
                 ),
               ),
@@ -117,9 +118,7 @@ class _DefaultControllerAboveExampleScreenState extends State<DefaultControllerA
             ListTile(
               title: Text("@user_$index"),
               onTap: (){
-                if(lastDetection != null){
-                  _textEditingController.replaceRange("@user_$index", lastDetection.range);
-                }
+                _textEditingController.replaceRange("@user_$index", lastDetection.range);
               },
             )),
       ),
@@ -140,9 +139,7 @@ class _DefaultControllerAboveExampleScreenState extends State<DefaultControllerA
             ListTile(
               title: Text("#hashtag_$index"),
               onTap: (){
-                if(lastDetection != null){
-                  _textEditingController.replaceRange("#hashtag_$index", lastDetection.range);
-                }
+                _textEditingController.replaceRange("#hashtag_$index", lastDetection.range);
               },
             )),
       ),

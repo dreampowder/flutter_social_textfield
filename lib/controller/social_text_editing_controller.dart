@@ -68,7 +68,9 @@ class SocialTextEditingController extends TextEditingController{
     if(currentPosition == -1){
       currentPosition = 0;
     }
-
+    if(currentPosition >newValue.text.length){
+      currentPosition = newValue.text.length - 1;
+    }
     var subString = newValue.text.substring(0,currentPosition);
 
     var lastPart = subString.split(" ").last.split("\n").last;
@@ -105,6 +107,4 @@ class SocialTextEditingController extends TextEditingController{
   TextSpan buildTextSpan({required BuildContext context, TextStyle? style, required bool withComposing}) {
     return SocialTextSpanBuilder(regularExpressions: _regularExpressions,defaultTextStyle: style,detectionTextStyles: detectionTextStyles).build(text);
   }
-
-
 }

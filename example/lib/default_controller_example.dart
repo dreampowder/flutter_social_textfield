@@ -93,9 +93,7 @@ class _DefaultControllerExampleScreenState extends State<DefaultControllerExampl
           ListTile(
             title: Text("@user_$index"),
             onTap: (){
-              if(lastDetection != null){
-                _textEditingController.replaceRange("@user_$index", lastDetection.range);
-              }
+              _textEditingController.replaceRange("@user_$index", lastDetection.range);
             },
           )),
       preferredSize: Size.fromHeight(height),);
@@ -107,9 +105,7 @@ class _DefaultControllerExampleScreenState extends State<DefaultControllerExampl
           ListTile(
             title: Text("#hashtag_$index"),
             onTap: (){
-              if(lastDetection != null){
-                _textEditingController.replaceRange("#hashtag_$index", lastDetection.range);
-              }
+              _textEditingController.replaceRange("#hashtag_$index", lastDetection.range);
             },
           )),
       preferredSize: Size.fromHeight(height),);

@@ -78,8 +78,12 @@ class _DefaultSocialTextFieldControllerState
   @override
   void didUpdateWidget(covariant DefaultSocialTextFieldController oldWidget) {
     super.didUpdateWidget(oldWidget);
-    _streamSubscription =
-        widget.textEditingController.subscribeToDetection(onDetectContent);
+    _subscribeToStreamIfNeeded();
+  }
+
+  void _subscribeToStreamIfNeeded() async{
+    await _streamSubscription?.cancel();
+    _streamSubscription = widget.textEditingController.subscribeToDetection(onDetectContent);
   }
 
   ///Shows the widget that hes been set with the [widget.detectionBuilders]. return empty Container if noting found
@@ -147,7 +151,7 @@ class _DefaultSocialTextFieldControllerState
     if (!(renderObject is RenderBox)) {
       return 0.0;
     }
-    RenderBox box = renderObject as RenderBox;
+    RenderBox box = renderObject;
     Offset position = box.localToGlobal(Offset.zero); //this is global position
     double y = position.dy; //
     return MediaQuery.of(context).size.height - y;
